@@ -13,8 +13,6 @@
 
 #include "deletable_primes.h"
 
-int ways;
-
 unsigned long remove_digit(int index, unsigned long n)
 {
     int count = 0;
@@ -28,7 +26,15 @@ unsigned long remove_digit(int index, unsigned long n)
     }
 
     int temp[count];
+    if(count < 1)
+    {
     int tempTemp[count - 1];
+    }
+    else
+    {
+        int tempTemp[count];
+    }
+    
 
     //save digits of n into the array
     temps = n;
@@ -41,9 +47,19 @@ unsigned long remove_digit(int index, unsigned long n)
     //save the elements of the first array in a new one - without the one to be removed
     int u = 0;
     int j = 0;
+
+    if (index == 0)
+    {
+        index += (count - index - 1);
+    }
+    else
+    {
+        index -= 1;
+    }
+
     while (u < count)
     {
-        if (u != (index + (count - index - 1)))
+        if (u != index)
         {
             tempTemp[j] = temp[u];
             j++;
@@ -52,12 +68,20 @@ unsigned long remove_digit(int index, unsigned long n)
         u++;
     }
 
-    unsigned long newLong;
+    unsigned long newLong = 0;
 
     //convert array back to unsigned long
     for (int i = 0; i < count; i++)
     {
-        newLong = 10 * newLong + tempTemp[i];
+        if(tempTemp[0] == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            newLong = 10 * newLong + tempTemp[i];
+        }
+    
     }
 
     return newLong;
