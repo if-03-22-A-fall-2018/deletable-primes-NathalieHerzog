@@ -12,7 +12,11 @@
  */
 
 #include "deletable_primes.h"
+#include <math.h>
 
+//initial code
+
+/*
 unsigned long remove_digit(int index, unsigned long n)
 {
     int count = 0;
@@ -26,15 +30,7 @@ unsigned long remove_digit(int index, unsigned long n)
     }
 
     int temp[count];
-    if(count < 1)
-    {
     int tempTemp[count - 1];
-    }
-    else
-    {
-        int tempTemp[count];
-    }
-    
 
     //save digits of n into the array
     temps = n;
@@ -121,11 +117,73 @@ bool is_prime(unsigned long n)
 
     for (int i = 2; i < temp; i++)
     {
-        if (i != temp && temp % i == 0)
+        if (temp % i == 0)
         {
             return false;
         }
     }
 
     return true;
+}
+*/
+
+
+unsigned long remove_digit(int index, unsigned long n)
+{
+    int behind = 0;
+
+    if (index > get_length(n))
+    {
+        return n;
+    }
+
+    //had to copy some code from someone else since I was really stuck
+    //and nobody could help me because of how complicated I wrote my initial code
+    behind = n % (int)pow(10, index);
+    n /= pow(10, index + 1);
+    return n * pow(10, index) + behind;
+}
+
+int get_ways(unsigned long n)
+{
+    int ways = 0;
+
+    if (!is_prime(n))
+    {
+        return 0;
+    }
+    if (n < 10)
+    {
+        return 1;
+    }
+
+    for (int i = 0; i < get_length(n); i++)
+    {
+        ways += get_ways(remove_digit(i, n));
+    }
+
+    return ways;
+}
+
+bool is_prime(unsigned long n)
+{
+    int temp = n;
+
+    for (int i = 2; i < temp; i++)
+    {
+        if (temp % i == 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int get_length(unsigned long n)
+{
+     if(n == 0){
+     return 1;
+   }
+   return floor(log10(n))+1;
 }
